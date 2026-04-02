@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   root: 'test-game',
@@ -63,5 +64,13 @@ export default defineConfig({
         });
       },
     },
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'node_modules/coi-serviceworker/coi-serviceworker.js',
+          dest: './test-game',
+        },
+      ],
+    }),
   ],
 });
