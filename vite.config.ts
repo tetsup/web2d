@@ -1,6 +1,9 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { dirname, join } from 'path';
+
+const coiPath = dirname(require.resolve('coi-serviceworker/package.json'));
 
 export default defineConfig({
   root: 'test-game',
@@ -67,8 +70,8 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: 'node_modules/coi-serviceworker/coi-serviceworker.js',
-          dest: './test-game',
+          src: join(coiPath, 'coi-serviceworker.js'),
+          dest: '.',
         },
       ],
     }),
