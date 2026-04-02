@@ -22,6 +22,7 @@
     "build:test": "vite build",
     "dev": "vite",
     "watch:lib": "tsdx watch",
+    "preview:test": "vite preview",
     "dev:all": "concurrently \"pnpm:watch:lib\" \"pnpm:dev\"",
     "test": "vitest run",
     "test:watch": "vitest",
