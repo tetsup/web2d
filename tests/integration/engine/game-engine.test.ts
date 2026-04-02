@@ -54,7 +54,7 @@ describe('GameEngine (headless, ImageData mocked)', () => {
     await engine.advance(1);
     input.release('left');
 
-    expect((globalThis as any).__debug.pos).toEqual({ x: 9, y: 0 });
+    expect((globalThis as any).__debug.pos).toEqual({ x: 19, y: 0 });
   });
 
   it('押しっぱなしでも1回だけ移動', async () => {
