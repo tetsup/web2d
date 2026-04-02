@@ -48,7 +48,7 @@ export class TestGame implements Game<TestKey> {
     if (down && !this.state.keyState.down) this.move('down', boost);
     this.state.keyState = { left, right, up, down };
 
-    this.state.skin = (clock / 1000) % 2 == 1;
+    this.state.skin = Math.floor(clock / 1000) % 2 == 1;
 
     (globalThis as any).__debug = {
       pos: {
