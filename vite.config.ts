@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   root: 'test-game',
+  base: './',
   server: {
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
