@@ -35,40 +35,19 @@
     "typecheck": "tsdx typecheck",
     "prepublishOnly": "pnpm run build"
   },
-  "peerDependencies": {
-    "react": ">=18",
-    "react-dom": ">=18"
-  },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "@storybook/addon-a11y": "^10.1.11",
-    "@storybook/addon-docs": "^10.1.11",
-    "@storybook/addon-onboarding": "^10.1.11",
-    "@storybook/addon-vitest": "^10.1.11",
-    "@storybook/react-vite": "^10.1.11",
-    "@testing-library/react": "^16.3.1",
-    "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.5.0",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "@types/styled-components": "^5.1.36",
     "@vitest/browser-playwright": "4.1.2",
     "@vitest/coverage-v8": "4.1.2",
     "coi-serviceworker": "^0.1.7",
     "jsdom": "^27.4.0",
     "playwright": "^1.57.0",
     "prettier": "^3.7.4",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "storybook": "^10.1.11",
-    "styled-components": "^6.2.0",
     "tsdx": "^2.0.0",
     "typescript": "^5.9.3",
     "vite": "^8.0.3",
     "vite-plugin-static-copy": "^4.0.0",
     "vitest": "4.1.2"
-  },
-  "dependencies": {
-    "js-yaml": "^4.1.1"
   }
 }
