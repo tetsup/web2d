@@ -1,6 +1,6 @@
 {
-  "name": "web2d",
-  "version": "0.0.0",
+  "name": "@tetsup/web2d",
+  "version": "0.0.1",
   "license": "MIT",
   "author": "tetsup",
   "type": "module",
