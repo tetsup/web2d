@@ -11,6 +11,14 @@
 
 ---
 
+# Install
+
+```shell
+pip install @tetsup/web2d
+```
+
+---
+
 # Usage
 
 ```js
