@@ -1,4 +1,4 @@
-import type { ImageObject, ImageWithId, RectSize } from './image';
+import type { ImageBufferData, ImageObject, ImageWithId, RectSize } from './image';
 import type { InputManagerLike, Key, KeyAssignment, SoftPadLike } from './input';
 
 export interface GameRenderer {
@@ -26,6 +26,9 @@ export interface Game<InputKeys extends Key> {
   onInit: OnInitGame;
 }
 
+/** Transport mode for render frame data */
+export type TransparentMode = 'sab' | 'message';
+
 export type MessageToWorker =
   | {
       command: 'init';
@@ -40,10 +43,23 @@ export type MessageToWorker =
       command: 'render';
     }
   | {
+      command: 'renderFrame';
+      params: {
+        /** Serialized frame data in message mode */
+        frameData: ImageBufferData[];
+      };
+    }
+  | {
       command: 'registerImage';
       params: {
         imageIndex: number;
         imageData: ImageBitmap;
+      };
+    }
+  | {
+      command: 'setTransparentMode';
+      params: {
+        mode: TransparentMode;
       };
     };
 

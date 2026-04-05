@@ -23,3 +23,9 @@ export type ImageWithId = {
   imageId: string;
   imageData: ImageBitmap;
 };
+
+/** Unified render data item passed to RenderEngine.render() */
+export type RenderItem = {
+  pos: Point2d;
+  image: ImageBitmap | undefined;
+};

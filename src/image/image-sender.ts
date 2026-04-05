@@ -1,4 +1,4 @@
-import type { GameRenderer } from '@/types/engine';
+import type { GameRenderer, TransparentMode } from '@/types/engine';
 import type { ImageBufferData, ImageObject, ImageWithId } from '@/types/image';
 import type { FrameBuffer } from '@/image/frame-buffer';
 import type { WorkerWrapper } from '@/engine/worker-wrapper';
@@ -8,11 +8,17 @@ import { createArrayFromImages } from './frame-transfer';
 export class ImageSender implements GameRenderer {
   private idMapper: BiMap<number, string>;
   private nextIndex: number = 0;
+  private mode: TransparentMode = 'sab';
+
   constructor(
     private buffer: FrameBuffer,
     private worker: WorkerWrapper
   ) {
     this.idMapper = new BiMap();
+  }
+
+  setMode(mode: TransparentMode) {
+    this.mode = mode;
   }
 
   private objectToBufferData(imageObject: ImageObject): ImageBufferData {
@@ -47,7 +53,13 @@ export class ImageSender implements GameRenderer {
   }
 
   render(imageObjects: ImageObject[]) {
-    const array = createArrayFromImages(imageObjects.map((imageObject) => this.objectToBufferData(imageObject)));
-    this.buffer.write(array);
+    const frameData = imageObjects.map((imageObject) => this.objectToBufferData(imageObject));
+    if (this.mode === 'sab') {
+      const array = createArrayFromImages(frameData);
+      this.buffer.write(array);
+      this.worker.post({ command: 'render' });
+    } else {
+      this.worker.post({ command: 'renderFrame', params: { frameData } });
+    }
   }
 }

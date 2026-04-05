@@ -1,9 +1,11 @@
 import './debug/log-forwarder';
 import './debug/error-forwarder';
 import { GameApp } from '@/engine/game-app';
+import { resolveTransparentMode } from '@/utils/transparent-mode';
 import { TestGame } from './test-game';
 import { KeyAssignment } from '@/types/input';
 import { TestKey } from './types/game';
+import type { TransparentMode } from '@/types/engine';
 
 const canvas = document.getElementById('game') as HTMLCanvasElement;
 
@@ -37,6 +39,12 @@ const app = new GameApp(canvas, new TestGame(), {
   keyAssignment,
   assignPad,
 });
+
+const params = new URLSearchParams(location.search);
+const modeParam = params.get('mode');
+const mode: TransparentMode =
+  modeParam === 'sab' || modeParam === 'message' ? modeParam : resolveTransparentMode();
+app.setTransparentMode(mode);
 
 (document.getElementById('start') as HTMLButtonElement).onclick = () => {
   app.start();

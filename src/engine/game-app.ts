@@ -1,4 +1,4 @@
-import type { Game, GameOptions } from '@/types/engine';
+import type { Game, GameOptions, TransparentMode } from '@/types/engine';
 import type { Key } from '@/types/input';
 import { InputManager } from '@/input/input-manager';
 import { KeyboardListener } from '@/input/keyboard-listener';
@@ -6,6 +6,7 @@ import { FrameBuffer } from '@/image/frame-buffer';
 import { ImageSender } from '@/image/image-sender';
 import { GameEngine } from './game-engine';
 import { WorkerWrapper } from './worker-wrapper';
+import { resolveTransparentMode } from '@/utils/transparent-mode';
 
 export class GameApp<InputKeys extends Key> {
   private worker: WorkerWrapper;
@@ -39,6 +40,18 @@ export class GameApp<InputKeys extends Key> {
         rectSize: gameOptions.rectSize,
       },
     });
+
+    const initialMode = resolveTransparentMode();
+    this.applyMode(initialMode);
+  }
+
+  setTransparentMode(mode: TransparentMode) {
+    this.applyMode(mode);
+  }
+
+  private applyMode(mode: TransparentMode) {
+    this.imageSender.setMode(mode);
+    this.worker.post({ command: 'setTransparentMode', params: { mode } });
   }
 
   start() {
