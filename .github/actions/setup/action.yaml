@@ -20,7 +20,7 @@ runs:
       shell: bash
 
     - name: Install dependencies
-      run: pnpm install --frozen-lockfile --prod=false
+      run: pnpm install --prod=false
       shell: bash
 
     - name: Rebuild native modules
