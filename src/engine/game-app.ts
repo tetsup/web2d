@@ -1,9 +1,10 @@
-import type { Game, GameOptions } from '@/types/engine';
+import type { Game, GameOptions, ResolvedTransparentMode, TransparentMode } from '@/types/engine';
 import type { Key } from '@/types/input';
 import { InputManager } from '@/input/input-manager';
 import { KeyboardListener } from '@/input/keyboard-listener';
 import { FrameBuffer } from '@/image/frame-buffer';
 import { ImageSender } from '@/image/image-sender';
+import { resolveTransparentMode } from '@/utils/transparent-mode';
 import { GameEngine } from './game-engine';
 import { WorkerWrapper } from './worker-wrapper';
 
@@ -13,12 +14,17 @@ export class GameApp<InputKeys extends Key> {
   private gameEngine: GameEngine<InputKeys>;
   private keyboard: KeyboardListener<InputKeys>;
   private imageSender: ImageSender;
+  private transparentMode: TransparentMode;
+  private resolvedTransparentMode: ResolvedTransparentMode;
 
   constructor(
     private canvas: HTMLCanvasElement,
     game: Game<InputKeys>,
     gameOptions: GameOptions<InputKeys>
   ) {
+    this.transparentMode = gameOptions.transparent ?? 'auto';
+    this.resolvedTransparentMode = resolveTransparentMode(this.transparentMode);
+
     this.worker = new WorkerWrapper();
     this.sharedBuffer = new SharedArrayBuffer(FrameBuffer.requiredSize(gameOptions.maxObjects));
     const frameBuffer = new FrameBuffer(this.sharedBuffer, gameOptions.maxObjects);
@@ -37,7 +43,17 @@ export class GameApp<InputKeys extends Key> {
         buffer: this.sharedBuffer,
         maxObjects: gameOptions.maxObjects,
         rectSize: gameOptions.rectSize,
+        transparent: this.resolvedTransparentMode,
       },
+    });
+  }
+
+  setTransparentMode(mode: TransparentMode): void {
+    this.transparentMode = mode;
+    this.resolvedTransparentMode = resolveTransparentMode(mode);
+    this.worker.post({
+      command: 'setTransparentMode',
+      params: { mode: this.resolvedTransparentMode },
     });
   }
 

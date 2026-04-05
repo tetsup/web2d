@@ -14,11 +14,15 @@ export type OnTickGame<InputKeys extends Key> = (
   renderer: GameRenderer
 ) => PromiseLike<boolean>;
 
+export type TransparentMode = 'auto' | 'sab' | 'message';
+export type ResolvedTransparentMode = 'sab' | 'message';
+
 export type GameOptions<InputKeys extends Key> = {
   maxObjects: number;
   rectSize: RectSize;
   keyAssignment: KeyAssignment<InputKeys>;
   assignPad?: (input: InputManagerLike<InputKeys>) => SoftPadLike<InputKeys>;
+  transparent?: TransparentMode;
 };
 
 export interface Game<InputKeys extends Key> {
@@ -34,6 +38,7 @@ export type MessageToWorker =
         buffer: SharedArrayBuffer;
         maxObjects: number;
         rectSize: RectSize;
+        transparent: ResolvedTransparentMode;
       };
     }
   | {
@@ -44,6 +49,12 @@ export type MessageToWorker =
       params: {
         imageIndex: number;
         imageData: ImageBitmap;
+      };
+    }
+  | {
+      command: 'setTransparentMode';
+      params: {
+        mode: ResolvedTransparentMode;
       };
     };
 
