@@ -25,3 +25,7 @@ runs:
     - name: Rebuild native modules
       run: pnpm rebuild
       shell: bash
+
+    - name: Approve SWC build
+      run: pnpm approve-builds @swc/core
+      shell: bash
