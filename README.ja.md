@@ -162,4 +162,4 @@ renderer.render([
 
 完全なサンプルはこちら：
 
-👉 https://github.com/tetsup/web2d/tree/master/test-game
+👉 https://github.com/tetsup/web2d/tree/main/test-game
