@@ -1,10 +1,14 @@
 {
   "name": "@tetsup/web2d",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "MIT",
   "author": "tetsup",
-  "publishConfig": {"access": "public"},
-  "repository": {"url": "https://github.com/tetsup/web2d"},
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "url": "https://github.com/tetsup/web2d"
+  },
   "type": "module",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
