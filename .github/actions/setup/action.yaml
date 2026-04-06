@@ -23,7 +23,7 @@ runs:
       shell: bash
 
     - name: Approve SWC build
-      run: pnpm approve-builds --filter "@swc/core*"
+      run: pnpm approve-builds --filter "@swc/core"
       shell: bash
       env:
         PNPM_APPROVE_BUILDS: true
