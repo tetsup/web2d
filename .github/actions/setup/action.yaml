@@ -21,3 +21,7 @@ runs:
     - name: Install dependencies
       run: pnpm install --prod=false
       shell: bash
+
+    - name: Rebuild native modules
+      run: pnpm rebuild
+      shell: bash
