@@ -51,7 +51,6 @@ export class GameApp<InputKeys extends Key> {
 
   private applyMode(mode: TransparentMode) {
     this.imageSender.setMode(mode);
-    this.worker.post({ command: 'setTransparentMode', params: { mode } });
   }
 
   start() {

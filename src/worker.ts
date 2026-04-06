@@ -1,4 +1,4 @@
-import type { MessageToWorker, TransparentMode } from '@/types/engine';
+import type { MessageToWorker } from '@/types/engine';
 import { RenderEngine } from '@/engine/render-engine';
 import { FrameBuffer } from '@/image/frame-buffer';
 import { ImageReceiver } from '@/image/image-receiver';
@@ -6,7 +6,6 @@ import { ImageReceiver } from '@/image/image-receiver';
 self.onmessage = (() => {
   let renderer: RenderEngine;
   let receiver: ImageReceiver;
-  let currentTransparentMode: TransparentMode = 'sab';
 
   return ({ data }: MessageEvent<MessageToWorker>) => {
     switch (data.command) {
@@ -33,10 +32,6 @@ self.onmessage = (() => {
       case 'registerImage': {
         self.postMessage(`add image index ${data.params.imageIndex}`);
         receiver.register(data.params.imageIndex, data.params.imageData);
-        break;
-      }
-      case 'setTransparentMode': {
-        currentTransparentMode = data.params.mode;
         break;
       }
     }

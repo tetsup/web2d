@@ -55,12 +55,6 @@ export type MessageToWorker =
         imageIndex: number;
         imageData: ImageBitmap;
       };
-    }
-  | {
-      command: 'setTransparentMode';
-      params: {
-        mode: TransparentMode;
-      };
     };
 
 export type Phase = 'off' | 'loading' | 'ready' | 'running' | 'pause' | 'error';
