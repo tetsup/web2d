@@ -27,7 +27,7 @@ export class GameApp<InputKeys extends Key> {
     this.keyboard = new KeyboardListener(inputManager, gameOptions.keyAssignment);
     gameOptions.assignPad?.(inputManager);
     this.imageSender = new ImageSender(frameBuffer, this.worker);
-    this.gameEngine = new GameEngine(this.worker, this.imageSender, inputManager, game);
+    this.gameEngine = new GameEngine(this.imageSender, inputManager, game);
 
     const offscreen = this.canvas.transferControlToOffscreen();
 

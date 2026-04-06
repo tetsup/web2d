@@ -18,7 +18,7 @@ describe('GameEngine (headless, ImageData mocked)', () => {
     worker = new MockWorker();
     sender = new MockImageSender();
     const game = new TestGame();
-    engine = new GameEngine(worker as any, sender as any, input, game);
+    engine = new GameEngine(sender as any, input, game);
     await new Promise((r) => setTimeout(r, 0));
   });
 
@@ -73,5 +73,19 @@ describe('GameEngine (headless, ImageData mocked)', () => {
     const second = (globalThis as any).__debug.skin;
 
     expect(first).not.toEqual(second);
+  });
+
+  it('ImageSender.render is called exactly once per tick (no double render)', async () => {
+    sender.render.mockClear();
+    await engine.advance(1);
+    expect(sender.render).toHaveBeenCalledTimes(1);
+  });
+
+  it('ImageSender.render is called once per tick across multiple advances', async () => {
+    sender.render.mockClear();
+    await engine.advance(10);
+    await engine.advance(10);
+    await engine.advance(10);
+    expect(sender.render).toHaveBeenCalledTimes(3);
   });
 });
