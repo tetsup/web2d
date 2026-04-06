@@ -21,13 +21,3 @@ runs:
     - name: Install dependencies
       run: pnpm install --prod=false
       shell: bash
-
-    - name: Approve SWC build
-      run: pnpm approve-builds --filter "@swc/core"
-      shell: bash
-      env:
-        PNPM_APPROVE_BUILDS: true
-
-    - name: Rebuild native modules
-      run: pnpm rebuild
-      shell: bash
