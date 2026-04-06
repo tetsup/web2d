@@ -42,11 +42,11 @@ const app = new GameApp(canvas, new TestGame(), {
 
 const params = new URLSearchParams(location.search);
 const modeParam = params.get('mode');
-const mode: TransparentMode =
-  modeParam === 'sab' || modeParam === 'message' ? modeParam : resolveTransparentMode();
+const mode: TransparentMode = modeParam === 'sab' || modeParam === 'message' ? modeParam : resolveTransparentMode();
 app.setTransparentMode(mode);
 
 (document.getElementById('start') as HTMLButtonElement).onclick = () => {
+  console.log(`starting with mode ${modeParam}`);
   app.start();
 };
 
