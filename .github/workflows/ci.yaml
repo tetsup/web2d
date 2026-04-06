@@ -26,6 +26,9 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
 
+      - name: Run typecheck
+        run: pnpm typecheck
+
       - name: Run unit tests
         run: pnpm test
 
@@ -41,8 +44,8 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
 
-      - name: Build libraries and test game
-        run: pnpm build:test
-
+      - name: Build libraries
+        run: pnpm build
+      
       - name: Run E2E tests
         run: pnpm test:e2e

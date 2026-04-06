@@ -4,15 +4,16 @@ description: Install dependencies with pnpm
 runs:
   using: composite
   steps:
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 24
-
     - name: Setup pnpm
       uses: pnpm/action-setup@v3
       with:
         version: 10
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 24
+        cache: pnpm
 
     - name: Update npm CLI
       run: npm install -g npm@latest
@@ -20,8 +21,4 @@ runs:
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile --prod=false
-      shell: bash
-
-    - name: Rebuild native modules
-      run: pnpm rebuild
       shell: bash
