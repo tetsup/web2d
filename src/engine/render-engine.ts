@@ -1,16 +1,11 @@
-import type { RectSize } from '@/types/image';
-import type { ImageReceiver } from '@/image/image-receiver';
+import type { RenderItem, RectSize } from '@/types/image';
 
 export class RenderEngine {
   private ctx: OffscreenCanvasRenderingContext2D;
   private ofs: OffscreenCanvas;
   private ofsCtx: OffscreenCanvasRenderingContext2D;
 
-  constructor(
-    canvas: OffscreenCanvas,
-    private receiver: ImageReceiver,
-    private rectSize: RectSize
-  ) {
+  constructor(canvas: OffscreenCanvas, private rectSize: RectSize) {
     this.ctx = canvas.getContext('2d', {
       alpha: true,
       desynchronized: true,
@@ -20,11 +15,11 @@ export class RenderEngine {
     this.ofsCtx = this.ofs.getContext('2d')!;
   }
 
-  render() {
+  render(items: RenderItem[]) {
     this.ofsCtx.fillStyle = 'white';
     this.ofsCtx.fillRect(0, 0, this.rectSize.width, this.rectSize.height);
-    this.receiver.read()?.forEach((object) => {
-      if (object.image) this.ofsCtx.drawImage(object.image, object.pos.x, object.pos.y);
+    items.forEach((item) => {
+      if (item.image) this.ofsCtx.drawImage(item.image, item.pos.x, item.pos.y);
     });
     this.ctx.drawImage(this.ofs, 0, 0);
   }

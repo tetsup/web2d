@@ -1,4 +1,4 @@
-import type { ImageObject, ImageWithId, RectSize } from './image';
+import type { ImageBufferData, ImageObject, ImageWithId, RectSize } from './image';
 import type { InputManagerLike, Key, KeyAssignment, SoftPadLike } from './input';
 
 export interface GameRenderer {
@@ -26,18 +26,29 @@ export interface Game<InputKeys extends Key> {
   onInit: OnInitGame;
 }
 
+/** Transport mode for render frame data */
+export type TransparentMode = 'sab' | 'message';
+
 export type MessageToWorker =
   | {
       command: 'init';
       params: {
         canvas: OffscreenCanvas;
-        buffer: SharedArrayBuffer;
+        /** Only present when cross-origin isolated (SAB mode). */
+        buffer?: SharedArrayBuffer;
         maxObjects: number;
         rectSize: RectSize;
       };
     }
   | {
       command: 'render';
+    }
+  | {
+      command: 'renderFrame';
+      params: {
+        /** Serialized frame data in message mode */
+        frameData: ImageBufferData[];
+      };
     }
   | {
       command: 'registerImage';

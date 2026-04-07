@@ -1,7 +1,6 @@
 import type { Game, GameRenderer } from '@/types/engine';
 import type { ImageSender } from '@/image/image-sender';
 import type { InputManagerLike } from '@/types/input';
-import type { WorkerWrapper } from './worker-wrapper';
 import { GameClock } from './game-clock';
 
 export class GameEngine<InputKeys extends string> {
@@ -9,7 +8,6 @@ export class GameEngine<InputKeys extends string> {
   private currentAnimationFrame?: number;
 
   constructor(
-    private worker: WorkerWrapper,
     private imageSender: ImageSender,
     private input: InputManagerLike<InputKeys>,
     private game: Game<InputKeys>
@@ -30,7 +28,6 @@ export class GameEngine<InputKeys extends string> {
 
   private async tick(time: number) {
     if (await this.game.onTick(this.input, time, this.imageSender)) {
-      this.worker.post({ command: 'render' });
       return true;
     } else return false;
   }

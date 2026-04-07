@@ -41,8 +41,22 @@ jobs:
       - name: Setup project
         uses: ./.github/actions/setup
 
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            playwright-${{ runner.os }}-
+
+      - name: Set Playwright path
+        run: echo "PLAYWRIGHT_BROWSERS_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
+
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
+
+      - name: Build libraries
+        run: pnpm build:test
 
       - name: Run E2E tests
         run: pnpm test:e2e

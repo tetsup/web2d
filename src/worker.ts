@@ -9,20 +9,33 @@ self.onmessage = (() => {
 
   return ({ data }: MessageEvent<MessageToWorker>) => {
     switch (data.command) {
-      case 'init':
+      case 'init': {
         self.postMessage('init start');
-        const frameBuffer = new FrameBuffer(data.params.buffer, data.params.maxObjects);
+        const frameBuffer = data.params.buffer != null
+          ? new FrameBuffer(data.params.buffer, data.params.maxObjects)
+          : null;
         receiver = new ImageReceiver(frameBuffer);
-        renderer = new RenderEngine(data.params.canvas, receiver, data.params.rectSize);
+        renderer = new RenderEngine(data.params.canvas, data.params.rectSize);
         self.postMessage('init comp');
         break;
-      case 'render':
-        renderer?.render();
+      }
+      case 'render': {
+        if (!renderer || !receiver) break;
+        const items = receiver.readFromBuffer();
+        if (items != null) renderer.render(items);
         break;
-      case 'registerImage':
+      }
+      case 'renderFrame': {
+        if (!renderer || !receiver) break;
+        const items = receiver.resolve(data.params.frameData);
+        renderer.render(items);
+        break;
+      }
+      case 'registerImage': {
         self.postMessage(`add image index ${data.params.imageIndex}`);
         receiver.register(data.params.imageIndex, data.params.imageData);
         break;
+      }
     }
   };
 })();
