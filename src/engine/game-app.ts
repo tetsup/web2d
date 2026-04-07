@@ -10,7 +10,6 @@ import { resolveTransparentMode } from '@/utils/transparent-mode';
 
 export class GameApp<InputKeys extends Key> {
   private worker: WorkerWrapper;
-  private sharedBuffer: SharedArrayBuffer;
   private gameEngine: GameEngine<InputKeys>;
   private keyboard: KeyboardListener<InputKeys>;
   private imageSender: ImageSender;
@@ -20,9 +19,19 @@ export class GameApp<InputKeys extends Key> {
     game: Game<InputKeys>,
     gameOptions: GameOptions<InputKeys>
   ) {
+    // Resolve transport mode before attempting to create a SharedArrayBuffer,
+    // because SharedArrayBuffer throws in non-cross-origin-isolated environments.
+    const initialMode = resolveTransparentMode();
+
     this.worker = new WorkerWrapper();
-    this.sharedBuffer = new SharedArrayBuffer(FrameBuffer.requiredSize(gameOptions.maxObjects));
-    const frameBuffer = new FrameBuffer(this.sharedBuffer, gameOptions.maxObjects);
+
+    let frameBuffer: FrameBuffer | null = null;
+    let sharedBuffer: SharedArrayBuffer | undefined;
+    if (initialMode === 'sab') {
+      sharedBuffer = new SharedArrayBuffer(FrameBuffer.requiredSize(gameOptions.maxObjects));
+      frameBuffer = new FrameBuffer(sharedBuffer, gameOptions.maxObjects);
+    }
+
     const inputManager = new InputManager<InputKeys>();
     this.keyboard = new KeyboardListener(inputManager, gameOptions.keyAssignment);
     gameOptions.assignPad?.(inputManager);
@@ -35,13 +44,12 @@ export class GameApp<InputKeys extends Key> {
       command: 'init',
       params: {
         canvas: offscreen,
-        buffer: this.sharedBuffer,
+        buffer: sharedBuffer,
         maxObjects: gameOptions.maxObjects,
         rectSize: gameOptions.rectSize,
       },
     });
 
-    const initialMode = resolveTransparentMode();
     this.applyMode(initialMode);
   }
 

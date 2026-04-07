@@ -5,7 +5,7 @@ import { readImagesFromArray } from './frame-transfer';
 export class ImageReceiver {
   private images: Map<number, ImageBitmap>;
 
-  constructor(private buffer: FrameBuffer) {
+  constructor(private buffer: FrameBuffer | null) {
     this.images = new Map();
   }
 
@@ -19,6 +19,7 @@ export class ImageReceiver {
 
   /** Read from SharedArrayBuffer and convert to RenderItems (SAB mode). */
   readFromBuffer(): RenderItem[] | null {
+    if (this.buffer == null) return null;
     const array = this.buffer.read();
     if (array == null) return null;
     return this.toRenderItems(readImagesFromArray(array));

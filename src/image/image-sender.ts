@@ -11,7 +11,7 @@ export class ImageSender implements GameRenderer {
   private mode: TransparentMode = 'sab';
 
   constructor(
-    private buffer: FrameBuffer,
+    private buffer: FrameBuffer | null,
     private worker: WorkerWrapper
   ) {
     this.idMapper = new BiMap();
@@ -54,7 +54,7 @@ export class ImageSender implements GameRenderer {
 
   render(imageObjects: ImageObject[]) {
     const frameData = imageObjects.map((imageObject) => this.objectToBufferData(imageObject));
-    if (this.mode === 'sab') {
+    if (this.mode === 'sab' && this.buffer != null) {
       const array = createArrayFromImages(frameData);
       this.buffer.write(array);
       this.worker.post({ command: 'render' });

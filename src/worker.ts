@@ -11,7 +11,9 @@ self.onmessage = (() => {
     switch (data.command) {
       case 'init': {
         self.postMessage('init start');
-        const frameBuffer = new FrameBuffer(data.params.buffer, data.params.maxObjects);
+        const frameBuffer = data.params.buffer != null
+          ? new FrameBuffer(data.params.buffer, data.params.maxObjects)
+          : null;
         receiver = new ImageReceiver(frameBuffer);
         renderer = new RenderEngine(data.params.canvas, data.params.rectSize);
         self.postMessage('init comp');

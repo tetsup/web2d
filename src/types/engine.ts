@@ -34,7 +34,8 @@ export type MessageToWorker =
       command: 'init';
       params: {
         canvas: OffscreenCanvas;
-        buffer: SharedArrayBuffer;
+        /** Only present when cross-origin isolated (SAB mode). */
+        buffer?: SharedArrayBuffer;
         maxObjects: number;
         rectSize: RectSize;
       };
