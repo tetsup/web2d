@@ -50,7 +50,7 @@ jobs:
             playwright-${{ runner.os }}-
 
       - name: Set Playwright path
-        run: echo "PLAYWRIGHT_BROWSERS_PATH=~/.cache/ms-playwright" >> $GITHUB_ENV
+        run: echo PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright >> $GITHUB_ENV
 
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps
