@@ -1,6 +1,6 @@
 {
   "name": "@tetsup/web2d",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "MIT",
   "author": "tetsup",
   "publishConfig": {
@@ -25,21 +25,17 @@
     "build": "pnpm run build:lib",
     "build:worker": "tsc -p tsconfig.worker.json",
     "build:lib": "tsup && pnpm run build:worker",
-    "build:test": "vite build",
-    "dev": "vite",
-    "watch:lib": "bunchee watch",
-    "preview:test": "vite preview",
-    "dev:all": "concurrently \"pnpm:watch:lib\" \"pnpm:dev\"",
+    "build:test": "pnpm run build:worker && vite build",
+    "dev": "pnpm build:worker && vite",
+    "preview": "pnpm build:worker && vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
     "lint": "oxlint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit",
-    "prepublishOnly": "pnpm run build"
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@playwright/test": "^1.59.1",
