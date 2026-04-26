@@ -1,8 +1,9 @@
-import type { Key, KeyAssignment, InputManagerLike } from '@/types/input';
+import type { Key, KeyAssignment } from '@/types/input';
+import type { InputManager } from './input-manager';
 
 export class KeyboardListener<K extends Key> {
   constructor(
-    private input: InputManagerLike<K>,
+    private input: InputManager<K>,
     private assignment: KeyAssignment<K>
   ) {}
 

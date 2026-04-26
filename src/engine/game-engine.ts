@@ -1,6 +1,6 @@
 import type { Game, GameRenderer } from '@/types/engine';
 import type { ImageSender } from '@/image/image-sender';
-import type { InputManagerLike } from '@/types/input';
+import type { InputManager } from '@/input/input-manager';
 import { GameClock } from './game-clock';
 
 export class GameEngine<InputKeys extends string> {
@@ -9,7 +9,7 @@ export class GameEngine<InputKeys extends string> {
 
   constructor(
     private imageSender: ImageSender,
-    private input: InputManagerLike<InputKeys>,
+    private input: InputManager<InputKeys>,
     private game: Game<InputKeys>
   ) {
     this.clock = new GameClock();

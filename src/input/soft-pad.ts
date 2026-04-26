@@ -1,11 +1,12 @@
-import type { Key, SoftButtonConfig, InputManagerLike, SoftPadLike } from '@/types/input';
+import type { Key, SoftButtonConfig, SoftPadLike } from '@/types/input';
+import type { InputManager } from './input-manager';
 
 export class SoftPad<K extends Key> implements SoftPadLike<K> {
   private container: HTMLDivElement;
 
   constructor(
     parent: HTMLElement,
-    private input: InputManagerLike<K>,
+    private input: InputManager<K>,
     width: number,
     height: number,
     buttons: SoftButtonConfig<K>[]

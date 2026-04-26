@@ -1,5 +1,6 @@
+import type { InputManager } from '@/input/input-manager';
 import type { ImageBufferData, ImageObject, ImageWithId, RectSize } from './image';
-import type { InputManagerLike, Key, KeyAssignment, SoftPadLike } from './input';
+import type { Key, KeyAssignment, SoftPadLike } from './input';
 
 export interface GameRenderer {
   registerImage: (image: ImageWithId) => void;
@@ -9,7 +10,7 @@ export interface GameRenderer {
 export type OnInitGame = (renderer: GameRenderer) => PromiseLike<boolean>;
 
 export type OnTickGame<InputKeys extends Key> = (
-  input: InputManagerLike<InputKeys>,
+  input: InputManager<InputKeys>,
   clock: number,
   renderer: GameRenderer
 ) => PromiseLike<boolean>;
@@ -18,7 +19,7 @@ export type GameOptions<InputKeys extends Key> = {
   maxObjects: number;
   rectSize: RectSize;
   keyAssignment: KeyAssignment<InputKeys>;
-  assignPad?: (input: InputManagerLike<InputKeys>) => SoftPadLike<InputKeys>;
+  assignPad?: (input: InputManager<InputKeys>) => SoftPadLike<InputKeys>;
 };
 
 export interface Game<InputKeys extends Key> {

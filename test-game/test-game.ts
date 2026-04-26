@@ -1,7 +1,7 @@
 import type { Game, GameRenderer } from '@/types/engine';
-import type { InputManagerLike } from '@/types/input';
 import type { Direction, State, TestKey } from './types/game';
 import { createTestImage } from './test-image';
+import { InputManager } from '@/input/input-manager';
 
 const FIELD_WIDTH = 20;
 const FIELD_HEIGHT = 15;
@@ -35,7 +35,7 @@ export class TestGame implements Game<TestKey> {
     }
   }
 
-  async onTick(input: InputManagerLike<TestKey>, clock: number, renderer: GameRenderer) {
+  async onTick(input: InputManager<TestKey>, clock: number, renderer: GameRenderer) {
     const left = input.isPressed('left');
     const right = input.isPressed('right');
     const up = input.isPressed('up');
