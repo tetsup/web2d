@@ -1,7 +1,7 @@
 import type { GameRenderer, TransparentMode } from '@/types/engine';
 import type { ImageBufferData, ImageObject, ImageWithId } from '@/types/image';
 import type { FrameBuffer } from '@/image/frame-buffer';
-import type { WorkerWrapper } from '@/engine/worker-wrapper';
+import type { WorkerWrapper } from '@/worker-wrapper';
 import { BiMap } from '@/utils/map';
 import { createArrayFromImages } from './frame-transfer';
 

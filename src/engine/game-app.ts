@@ -5,7 +5,7 @@ import { KeyboardListener } from '@/input/keyboard-listener';
 import { FrameBuffer } from '@/image/frame-buffer';
 import { ImageSender } from '@/image/image-sender';
 import { GameEngine } from './game-engine';
-import { WorkerWrapper } from './worker-wrapper';
+import { WorkerWrapper } from '../worker-wrapper';
 import { resolveTransparentMode } from '@/utils/transparent-mode';
 
 export class GameApp<InputKeys extends Key> {

@@ -3,7 +3,7 @@ import type { MessageToWorker } from '@/types/engine';
 export class WorkerWrapper {
   private worker: Worker;
   constructor() {
-    this.worker = new Worker(new URL('../worker.js', import.meta.url), {
+    this.worker = new Worker(new URL('./worker.js', import.meta.url), {
       type: 'module',
     });
     this.worker.onmessage = (e) => {
