@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup';
 import path from 'node:path';
 
 export default defineConfig({
-  entry: ['src/index.ts'],
+  entry: ['src/index.ts', 'src/worker.ts'],
   format: ['esm'],
   dts: true,
   tsconfig: 'tsconfig.lib.json',
