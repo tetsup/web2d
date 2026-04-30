@@ -17,17 +17,25 @@ export class GameEngine<InputKeys extends string> {
   }
 
   private async init(onInit: (imageSender: GameRenderer) => PromiseLike<boolean>) {
-    if (this.clock.state.phase !== 'off' && this.clock.state.phase !== 'error') return;
+    let error: any = new Error('initialize failed');
+    if (this.clock.state.phase !== 'off' && this.clock.state.phase !== 'error') {
+      console.warn(`cannot initialize current phase: ${this.clock.state.phase}`);
+      return;
+    }
     this.clock.setPhase('loading');
     if (onInit == null) this.clock.setPhase('ready');
     else {
       try {
         const initResult = await onInit(this.imageSender);
-        this.clock.setPhase(initResult ? 'ready' : 'error');
+        if (initResult) {
+          this.clock.setPhase('ready');
+          return;
+        }
       } catch (e) {
-        this.clock.setPhase('error');
-        throw e;
+        error = e;
       }
+      this.clock.setPhase('error');
+      throw error;
     }
   }
 
