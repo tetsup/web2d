@@ -21,8 +21,13 @@ export class GameEngine<InputKeys extends string> {
     this.clock.setPhase('loading');
     if (onInit == null) this.clock.setPhase('ready');
     else {
-      const initResult = await onInit(this.imageSender);
-      this.clock.setPhase(initResult ? 'ready' : 'error');
+      try {
+        const initResult = await onInit(this.imageSender);
+        this.clock.setPhase(initResult ? 'ready' : 'error');
+      } catch (e) {
+        this.clock.setPhase('error');
+        throw e;
+      }
     }
   }
 
