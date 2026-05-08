@@ -15,8 +15,8 @@ export class KeyboardListener<K extends Key> {
   }
 
   private registerListener() {
-    document.addEventListener('keydown', this.onPress);
-    document.addEventListener('keyup', this.onRelease);
+    document.addEventListener('keydown', (e: KeyboardEvent) => this.onPress(e));
+    document.addEventListener('keyup', (e: KeyboardEvent) => this.onRelease(e));
   }
 
   private unregisterListener() {
