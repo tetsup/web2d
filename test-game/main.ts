@@ -29,8 +29,6 @@ function assignPad(input: any) {
   bind('up', 'up');
   bind('down', 'down');
   bind('boost', 'boost');
-
-  return {} as any;
 }
 
 const app = new GameApp(canvas, new TestGame(), {

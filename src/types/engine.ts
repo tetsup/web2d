@@ -19,7 +19,7 @@ export type GameOptions<InputKeys extends Key> = {
   maxObjects: number;
   rectSize: RectSize;
   keyAssignment: KeyAssignment<InputKeys>;
-  assignPad?: (input: InputManager<InputKeys>) => SoftPadLike<InputKeys>;
+  assignPad?: (input: InputManager<InputKeys>) => void;
 };
 
 export interface Game<InputKeys extends Key> {
