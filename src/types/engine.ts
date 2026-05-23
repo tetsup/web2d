@@ -1,6 +1,6 @@
 import type { InputManager } from '@/input/input-manager';
 import type { ImageBufferData, ImageObject, ImageWithId, RectSize } from './image';
-import type { Key, KeyAssignment, SoftPadLike } from './input';
+import type { Key, KeyAssignment } from './input';
 
 export interface GameRenderer {
   registerImage: (image: ImageWithId) => void;
