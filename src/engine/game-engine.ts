@@ -68,4 +68,8 @@ export class GameEngine<InputKeys extends string> {
     this.clock.advance(timeAdd);
     await this.tick(this.clock.state.time);
   }
+
+  changeSpeed(speed: number = 1) {
+    this.clock.changeSpeed(speed);
+  }
 }

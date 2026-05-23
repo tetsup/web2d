@@ -80,4 +80,8 @@ export class GameApp<InputKeys extends Key> {
     this.gameEngine.pause();
     this.worker.terminate();
   }
+
+  changeSpeed(speed: number = 1) {
+    this.gameEngine.changeSpeed(speed);
+  }
 }
