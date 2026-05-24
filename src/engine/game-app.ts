@@ -1,18 +1,20 @@
 import type { Game, GameOptions, TransparentMode } from '@/types/engine';
 import type { Key } from '@/types/input';
+import { resolveTransparentMode } from '@/utils/transparent-mode';
 import { InputManager } from '@/input/input-manager';
 import { KeyboardListener } from '@/input/keyboard-listener';
 import { FrameBuffer } from '@/image/frame-buffer';
 import { ImageSender } from '@/image/image-sender';
-import { GameEngine } from './game-engine';
 import { WorkerWrapper } from '../worker-wrapper';
-import { resolveTransparentMode } from '@/utils/transparent-mode';
+import { GameEngine } from './game-engine';
+import { StatManager } from './stat';
 
 export class GameApp<InputKeys extends Key> {
   private worker: WorkerWrapper;
   private gameEngine: GameEngine<InputKeys>;
   private keyboard: KeyboardListener<InputKeys>;
   private imageSender: ImageSender;
+  readonly stat: StatManager;
 
   constructor(
     private canvas: HTMLCanvasElement,
@@ -36,7 +38,8 @@ export class GameApp<InputKeys extends Key> {
     this.keyboard = new KeyboardListener(inputManager, gameOptions.keyAssignment);
     gameOptions.assignPad?.(inputManager);
     this.imageSender = new ImageSender(frameBuffer, this.worker);
-    this.gameEngine = new GameEngine(this.imageSender, inputManager, game);
+    this.stat = new StatManager();
+    this.gameEngine = new GameEngine(this.imageSender, inputManager, game, this.stat);
 
     const offscreen = this.canvas.transferControlToOffscreen();
 

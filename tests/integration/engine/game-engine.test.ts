@@ -4,6 +4,7 @@ import { GameEngine } from '@/engine/game-engine';
 import { InputManager } from '@/input/input-manager';
 import { TestGame } from '@test-game/test-game';
 import { MockImageSender, MockWorker } from '@tests/setup/mocks';
+import { StatManager } from '@/engine/stat';
 
 vi.mock('@test-game/test-image');
 
@@ -18,7 +19,8 @@ describe('GameEngine (headless, ImageData mocked)', () => {
     worker = new MockWorker();
     sender = new MockImageSender();
     const game = new TestGame();
-    engine = new GameEngine(sender as any, input, game);
+    const stat = new StatManager();
+    engine = new GameEngine(sender as any, input, game, stat);
     await new Promise((r) => setTimeout(r, 0));
   });
 
