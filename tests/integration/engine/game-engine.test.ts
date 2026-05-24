@@ -19,7 +19,7 @@ describe('GameEngine (headless, ImageData mocked)', () => {
     worker = new MockWorker();
     sender = new MockImageSender();
     const game = new TestGame();
-    const stat = new StatManager();
+    const stat = new StatManager(10);
     engine = new GameEngine(sender as any, input, game, stat);
     await new Promise((r) => setTimeout(r, 0));
   });

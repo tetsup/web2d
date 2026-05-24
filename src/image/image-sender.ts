@@ -1,5 +1,6 @@
 import type { GameRenderer, TransparentMode } from '@/types/engine';
 import type { ImageBufferData, ImageObject, ImageWithId } from '@/types/image';
+import type { StatManager } from '@/engine/stat';
 import type { FrameBuffer } from '@/image/frame-buffer';
 import type { WorkerWrapper } from '@/worker-wrapper';
 import { BiMap } from '@/utils/map';
@@ -12,7 +13,8 @@ export class ImageSender implements GameRenderer {
 
   constructor(
     private buffer: FrameBuffer | null,
-    private worker: WorkerWrapper
+    private worker: WorkerWrapper,
+    private stat: StatManager
   ) {
     this.idMapper = new BiMap();
   }
@@ -57,6 +59,7 @@ export class ImageSender implements GameRenderer {
     if (this.mode === 'sab' && this.buffer != null) {
       const array = createArrayFromImages(frameData);
       this.buffer.write(array);
+      this.stat.setImageObjects(array.byteLength);
       this.worker.post({ command: 'render' });
     } else {
       this.worker.post({ command: 'renderFrame', params: { frameData } });

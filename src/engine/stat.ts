@@ -1,4 +1,4 @@
-import { ClockState } from '@/types/engine';
+import { ClockState, GameOptions } from '@/types/engine';
 import { EngineStat } from '@/types/stat';
 
 const calcCps = (startMs: number, nowMs: number, count: number) => (count / (nowMs - startMs)) * 1000;
@@ -9,8 +9,11 @@ export class StatManager {
   private totalStartMs: number;
   private intervalTickCount: number = 0;
   private intervalStartMs: number;
+  private intervalMaxObjects: number = 0;
+  private maxObjects: number = 0;
 
   constructor(
+    gameOptions: GameOptions<any>,
     initialStat?: EngineStat,
     private intervalMs: number = 1000
   ) {
@@ -19,6 +22,8 @@ export class StatManager {
     else
       this.stat = {
         clock: { phase: 'off', speed: 1.0 },
+        reservedObjects: gameOptions.maxObjects,
+        screenSize: gameOptions.rectSize,
         recentErrors: [],
       };
     this.totalStartMs = anchorTime;
@@ -36,7 +41,6 @@ export class StatManager {
   };
 
   private emit = () => {
-    console.log('emit');
     for (const listener of [...this.listeners]) {
       listener();
     }
@@ -51,18 +55,20 @@ export class StatManager {
 
   setClock = (clock: ClockState) => {
     this.update({ clock });
-    if (clock.phase === 'running') this.resetCount();
+    if (clock.phase === 'running') this.reset();
   };
 
   get clock() {
     return this.stat.clock;
   }
 
-  private resetCount = () => {
+  private reset = () => {
     const nowMs = performance.now();
     this.totalTickCount = 0;
+    this.maxObjects = 0;
     this.totalStartMs = nowMs;
     this.intervalTickCount = 0;
+    this.intervalMaxObjects = 0;
     this.intervalStartMs = nowMs;
   };
 
@@ -71,15 +77,21 @@ export class StatManager {
     this.intervalTickCount += 1;
     const now = performance.now();
     if (now >= this.intervalStartMs + this.intervalMs) {
-      this.updateFps(now);
+      this.updateInterval(now);
     }
   };
 
-  private updateFps = (nowMs: number) => {
+  setImageObjects = (objects: number) => {
+    this.maxObjects = Math.max(this.maxObjects, objects);
+    this.intervalMaxObjects = Math.max(this.intervalMaxObjects, objects);
+  };
+
+  private updateInterval = (nowMs: number) => {
     const fps = calcCps(this.totalStartMs, nowMs, this.totalTickCount);
     const intervalFps = calcCps(this.intervalStartMs, nowMs, this.intervalTickCount);
-    this.update({ fps, intervalFps });
+    this.update({ fps, intervalFps, maxObjects: this.maxObjects, intervalMaxObjects: this.intervalMaxObjects });
     this.intervalTickCount = 0;
+    this.intervalMaxObjects = 0;
     this.intervalStartMs = nowMs;
   };
 }
