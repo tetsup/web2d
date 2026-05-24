@@ -28,6 +28,7 @@ export class GameClock {
         if (this.stat.clock.phase !== 'ready' && this.stat.clock.phase !== 'pause')
           throw new ClockFunctionError('setPhase', this.stat.clock.phase, phase);
         this.stat.setClock({ ...this.stat.clock, phase, lastTick: performance.now() });
+        this.stat.reset();
         break;
       case 'pause':
         if (this.stat.clock.phase !== 'running' && this.stat.clock.phase !== 'pause')
@@ -51,6 +52,7 @@ export class GameClock {
     const now = performance.now();
     const delta = (now - this.stat.clock.lastTick) * this.stat.clock.speed;
     this.stat.setClock({ ...this.stat.clock, time: this.stat.clock.time + delta, lastTick: now });
+    this.stat.tick();
   }
 
   changeSpeed(speed: number) {

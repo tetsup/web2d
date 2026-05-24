@@ -54,15 +54,14 @@ export class StatManager {
   getSnapshot = () => this.stat;
 
   setClock = (clock: ClockState) => {
-    this.update({ clock });
-    if (clock.phase === 'running') this.reset();
+    this.stat = { ...this.stat, clock };
   };
 
   get clock() {
     return this.stat.clock;
   }
 
-  private reset = () => {
+  reset = () => {
     const nowMs = performance.now();
     this.totalTickCount = 0;
     this.maxObjects = 0;

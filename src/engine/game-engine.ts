@@ -43,7 +43,6 @@ export class GameEngine<InputKeys extends string> {
 
   private async tick(time: number) {
     if (await this.game.onTick(this.input, time, this.imageSender)) {
-      this.stat.tick();
       return true;
     } else return false;
   }

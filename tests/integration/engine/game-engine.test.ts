@@ -3,23 +3,21 @@ import { vi } from 'vitest';
 import { GameEngine } from '@/engine/game-engine';
 import { InputManager } from '@/input/input-manager';
 import { TestGame } from '@test-game/test-game';
-import { MockImageSender, MockWorker } from '@tests/setup/mocks';
+import { MockImageSender } from '@tests/setup/mocks';
 import { StatManager } from '@/engine/stat';
 
 vi.mock('@test-game/test-image');
 
 describe('GameEngine (headless, ImageData mocked)', () => {
   let engine: GameEngine<any>;
-  let worker: MockWorker;
   let sender: MockImageSender;
   let input: InputManager<any>;
 
   beforeEach(async () => {
     input = new InputManager();
-    worker = new MockWorker();
     sender = new MockImageSender();
     const game = new TestGame();
-    const stat = new StatManager(10);
+    const stat = new StatManager({ maxObjects: 10, rectSize: { width: 320, height: 240 }, keyAssignment: {} });
     engine = new GameEngine(sender as any, input, game, stat);
     await new Promise((r) => setTimeout(r, 0));
   });
