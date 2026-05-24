@@ -9,7 +9,7 @@ class ClockFunctionError extends Error {
 
 export class GameClock {
   constructor(private stat: StatManager) {
-    this.stat.setClock({ phase: 'off', speed: 1.0 });
+    this.stat.setClock({ phase: 'off', speed: 1.0 }, true);
   }
   setPhase(phase: Phase) {
     switch (phase) {
@@ -18,25 +18,25 @@ export class GameClock {
       case 'loading':
         if (this.stat.clock.phase !== 'off' && this.stat.clock.phase !== 'error')
           throw new ClockFunctionError('setPhase', this.stat.clock.phase, phase);
-        this.stat.setClock({ ...this.stat.clock, phase });
+        this.stat.setClock({ ...this.stat.clock, phase }, true);
         break;
       case 'ready':
         if (this.stat.clock.phase !== 'loading') throw new ClockFunctionError('setPhase', this.stat.clock.phase, phase);
-        this.stat.setClock({ ...this.stat.clock, phase, time: 0 });
+        this.stat.setClock({ ...this.stat.clock, phase, time: 0 }, true);
         break;
       case 'running':
         if (this.stat.clock.phase !== 'ready' && this.stat.clock.phase !== 'pause')
           throw new ClockFunctionError('setPhase', this.stat.clock.phase, phase);
-        this.stat.setClock({ ...this.stat.clock, phase, lastTick: performance.now() });
+        this.stat.setClock({ ...this.stat.clock, phase, lastTick: performance.now() }, true);
         this.stat.reset();
         break;
       case 'pause':
         if (this.stat.clock.phase !== 'running' && this.stat.clock.phase !== 'pause')
           throw new ClockFunctionError('setPhase', this.stat.clock.phase, phase);
-        this.stat.setClock({ ...this.stat.clock, phase });
+        this.stat.setClock({ ...this.stat.clock, phase }, true);
         break;
       case 'error':
-        this.stat.setClock({ ...this.stat.clock, phase });
+        this.stat.setClock({ ...this.stat.clock, phase }, true);
     }
   }
 
@@ -44,19 +44,19 @@ export class GameClock {
     if (this.stat.clock.phase !== 'ready' && this.stat.clock.phase !== 'running' && this.stat.clock.phase !== 'pause')
       throw new ClockFunctionError('advance', this.stat.clock.phase);
     if (delta < 0) throw new ClockFunctionError('advance', this.stat.clock.phase);
-    this.stat.setClock({ ...this.stat.clock, time: this.stat.clock.time + delta });
+    this.stat.setClock({ ...this.stat.clock, time: this.stat.clock.time + delta }, true);
   }
 
   tick() {
     if (this.stat.clock.phase !== 'running') throw new ClockFunctionError('tick', this.stat.clock.phase);
     const now = performance.now();
     const delta = (now - this.stat.clock.lastTick) * this.stat.clock.speed;
-    this.stat.setClock({ ...this.stat.clock, time: this.stat.clock.time + delta, lastTick: now });
+    this.stat.setClock({ ...this.stat.clock, time: this.stat.clock.time + delta, lastTick: now }, false);
     this.stat.tick();
   }
 
   changeSpeed(speed: number) {
     if (speed <= 0) throw new ClockFunctionError('changeSpeed', this.stat.clock.phase);
-    this.stat.setClock({ ...this.stat.clock, speed });
+    this.stat.setClock({ ...this.stat.clock, speed }, true);
   }
 }

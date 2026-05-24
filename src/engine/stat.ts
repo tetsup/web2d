@@ -53,8 +53,9 @@ export class StatManager {
 
   getSnapshot = () => this.stat;
 
-  setClock = (clock: ClockState) => {
+  setClock = (clock: ClockState, emit: boolean = false) => {
     this.stat = { ...this.stat, clock };
+    emit && this.emit();
   };
 
   get clock() {
